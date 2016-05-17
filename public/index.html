@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blog do Gabriel Feitosa</title>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/loja.css" rel="stylesheet">
+  </head>
+  <body ng-cloak>
+    <div class="container" ng-controller="LojaController as loja">
+      <div class="row">
+        <div class="page-header">
+          <h1>Pedidos em tempo real</h1>
+        </div>
+      </div>
+      <div class="row">
+        <form name="formPedidos" class="form-inline" ng-submit="loja.enviar()">
+          <div class="form-group">
+            <input class="form-control" size="30" ng-model="loja.pedido.usuario" placeholder="Qual seu nome?" required>
+            <input class="form-control" size="50" ng-model="loja.pedido.item" placeholder="Qual seu pedido?" required>
+            <button class="btn btn-primary btn-xs" type="submit" ng-disabled="formPedidos.$invalid">Enviar</button>
+          </div>
+        </form>
+      </div>
+      <br>
+      <div class="row">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <caption>Pedidos</caption>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>De quem é?</th>
+                <th>Quer o que?</th>
+                <th>Quando foi?</th>
+                <th>Qual o status?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="pedido in loja.pedidos | orderBy: '-id'" 
+              ng-class="{'success': pedido.status ==='Atendido', 'warning': pedido.status ==='Em atendimento','danger': pedido.status ==='Solicitado'}">
+                <td>{{pedido.id}}</td>
+                <td>{{pedido.usuario}}</td>
+                <td>{{pedido.item}}</td>
+                <td>{{pedido.data | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                <td>{{pedido.status}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+      
+      <script src="scripts/app.js"></script>
+      <script src="scripts/loja.controller.js"></script>
+    </body>
+  </html>
